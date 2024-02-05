@@ -1,113 +1,108 @@
+"use client";
+import { useState } from "react";
 import Image from "next/image";
+import data from "/data.json";
 
 export default function Home() {
+  const list = [
+    {
+      name: "Work",
+      img: "/images/icon-work.svg",
+      color: "bg-clr-work-light-red",
+    },
+    {
+      name: "Play",
+      img: "/images/icon-play.svg",
+      color: "bg-clr-play-soft-blue",
+    },
+    {
+      name: "Study",
+      img: "/images/icon-study.svg",
+      color: "bg-clr-study-light-red",
+    },
+    {
+      name: "Exercise",
+      img: "/images/icon-exercise.svg",
+      color: "bg-clr-exercise-lime-green",
+    },
+    {
+      name: "Social",
+      img: "/images/icon-social.svg",
+      color: "bg-clr-social-violet",
+    },
+    {
+      name: "Self Care",
+      img: "/images/icon-self-care.svg",
+      color: "bg-clr-self-care-light-orange",
+    },
+  ];
+  const [timeframe, setTimeframe] = useState("daily");
+
+  const handleTimeframeChange = (selectedTimeframe) => {
+    setTimeframe(selectedTimeframe);
+  };
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.js</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <body>
+      <div className="bg-clr-neutral-very-dark-blue h-dvh grid grid-cols-1 grid-rows-1 justify-items-center items-center">
+        <div className=" grid grid-cols-4 grid-rows-2 gap-5 w-9/12 ">
+          <div className=" col-span-1 row-span-2 flex flex-col text-white bg-clr-neutral-dark-blue   rounded-xl">
+            <div className="flex flex-col bg-clr-bg-blue rounded-xl pl-7 gap-10 justify-around">
+              <Image src="/images/image-jeremy.png" alt="Jeremy" width={100} height={100} />
+              <div>
+                <p className="">Report for</p>
+                <h2 className="text-3xl">Jeremy Robson</h2>
+              </div>
+            </div>
+            <div className="flex flex-col items-start  p-7">
+              <button onClick={() => handleTimeframeChange("daily")}>Daily</button>
+              <button onClick={() => handleTimeframeChange("weekly")}>Weekly</button>
+              <button onClick={() => handleTimeframeChange("monthly")}>Monthly</button>
+            </div>
+          </div>
+
+          {data.map((item, index) => {
+            // Find the corresponding item in the list array
+            const listItem = list.find(
+              (listItem) => listItem.name.toLowerCase() === item.title.toLowerCase()
+            );
+            const colorVariants = {
+              Work: "flex justify-end  bg-clr-work-light-red basis-1/4",
+              Play: "flex justify-end bg-clr-play-soft-blue basis-1/4",
+              Study: "flex justify-end  bg-clr-study-light-red basis-1/4",
+              Exercise: "flex justify-end bg-clr-exercise-lime-green basis-1/4",
+              Social: "flex justify-end bg-clr-social-violet basis-1/4",
+              "Self Care": "flex justify-end bg-clr-self-care-light-orange basis-1/4",
+            };
+
+            return (
+              <div
+                key={index}
+                className="rounded-lg text-white flex flex-col overflow-hidden  bg-clr-neutral-dark-blue  ">
+                <div className={`${colorVariants[item.title]} ...`}>
+                  {listItem && <Image src={listItem.img} alt={item.title} width={50} height={50} />}
+                </div>
+                <div className="flex flex-col p-5  bg-clr-neutral-dark-blue  rounded-lg basis-3/4">
+                  <div className="flex items-center place-content-between ">
+                    <h1 className="">{item.title}</h1>
+                    <svg width="21" height="5" xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        d="M2.5 0a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5Zm8 0a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5Zm8 0a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5Z"
+                        fill="#BBC0FF"
+                        fill-rule="evenodd"
+                      />
+                    </svg>
+                  </div>
+                  <h2 className="text-4xl">{item.timeframes[timeframe].current}hrs</h2>
+                  <p className="text-clr-neutral-pale-blue">
+                    Last Week -{item.timeframes[timeframe].previous}hrs
+                  </p>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
-
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-full sm:before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full sm:after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800 hover:dark:bg-opacity-30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50 text-balance`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+    </body>
   );
 }
